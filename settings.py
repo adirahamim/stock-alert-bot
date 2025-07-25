@@ -7,7 +7,8 @@ from dotenv import load_dotenv
 load_dotenv()
 
 TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
-CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
+#CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
+CHAT_IDS = [int(id.strip()) for id in os.getenv("TELEGRAM_CHAT_IDS", "").split(",") if id.strip()]
 TWELVE_API = os.getenv("TWELVE_DATA_API_KEY")
 FINNHUB_API = os.getenv("FINNHUB_API_KEY")
 ALPHA_VANTAGE_API = os.getenv("ALPHA_VANTAGE_API")

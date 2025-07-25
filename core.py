@@ -17,11 +17,16 @@ def is_market_open():
     now = datetime.datetime.now(pytz.timezone('America/New_York'))
     return now.weekday() < 5 and datetime.time(9, 30) <= now.time() <= datetime.time(16, 0)
 
+# def send_telegram(msg):
+#     url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
+#     print(f"🔄 שולח טלגרם: {msg}")
+#     response = requests.post(url, data={"chat_id": CHAT_ID, "text": msg})
+#     print(f"🔍 תגובת טלגרם: {response.text}")
+
 def send_telegram(msg):
     url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
-    print(f"🔄 שולח טלגרם: {msg}")
-    response = requests.post(url, data={"chat_id": CHAT_ID, "text": msg})
-    print(f"🔍 תגובת טלגרם: {response.text}")
+    for chat_id in CHAT_IDS:
+        requests.post(url, data={"chat_id": chat_id, "text": msg})
 
 def get_rating(symbol):
     url = f"https://finnhub.io/api/v1/stock/recommendation?symbol={symbol}&token={FINNHUB_API}"
