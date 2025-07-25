@@ -34,7 +34,7 @@ stocks = {
     "RGTI": {"low": 1.10, "high": 1.40, "buy_price": 1.20, "last": None, "prices": []},
     "ENVX": {"low": 8.80, "high": 9.60, "buy_price": 9.10, "last": None, "prices": []},
     "BMNR": {"low": 32.45, "high": 47.95, "buy_price": 35.55, "last": None, "prices": []},
-    "ETH": {"low": 3451.0, "high": 3901.0, "buy_price": 3541.0, "last": None, "prices": []}
+    "ETH": {"low": 33.31, "high": 36.56, "buy_price": 33.96, "last": None, "prices": []}
 }
 
 # ✅ פיצ'רים מתקדמים – הפעל/כבה לפי הצורך
