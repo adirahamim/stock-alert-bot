@@ -5,7 +5,7 @@ import time
 import datetime
 import pytz
 import matplotlib.pyplot as plt
-from settings import TELEGRAM_TOKEN, CHAT_ID, TWELVE_API, FINNHUB_API, TOTAL_BUDGET, ALLOCATED, stocks, USE_ANALYST_RATING, TEST_MODE
+from settings import TELEGRAM_TOKEN, CHAT_IDS, TWELVE_API, FINNHUB_API, TOTAL_BUDGET, ALLOCATED, stocks, USE_ANALYST_RATING, TEST_MODE
 
 last_summary_time = None
 already_reported = {}
