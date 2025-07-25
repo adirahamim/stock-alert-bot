@@ -5,23 +5,23 @@ import time
 import datetime
 import pytz
 import matplotlib.pyplot as plt
-from settings import TELEGRAM_TOKEN, CHAT_ID, TWELVE_API, FINNHUB_API, TOTAL_BUDGET, ALLOCATED, stocks, USE_ANALYST_RATING
+from settings import TELEGRAM_TOKEN, CHAT_ID, TWELVE_API, FINNHUB_API, TOTAL_BUDGET, ALLOCATED, stocks, USE_ANALYST_RATING, TEST_MODE
 
 last_summary_time = None
-
 already_reported = {}
-
 MAX_PRICE_HISTORY = 50  # שמור עד 50 נקודות מחיר אחרונות בלבד
 
 def is_market_open():
+    if TEST_MODE:
+        return True
     now = datetime.datetime.now(pytz.timezone('America/New_York'))
     return now.weekday() < 5 and datetime.time(9, 30) <= now.time() <= datetime.time(16, 0)
 
 def send_telegram(msg):
     url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
-    print(f"שולח טלגרם: {msg}")  # שורת בדיקה
+    print(f"🔄 שולח טלגרם: {msg}")
     response = requests.post(url, data={"chat_id": CHAT_ID, "text": msg})
-    print(response.text)  # שורת בדיקה
+    print(f"🔍 תגובת טלגרם: {response.text}")
 
 def get_rating(symbol):
     url = f"https://finnhub.io/api/v1/stock/recommendation?symbol={symbol}&token={FINNHUB_API}"
@@ -51,7 +51,7 @@ def decide_action(symbol, price, rating):
     amount_to_buy = min(available, 1000)
 
     if price <= stocks[symbol]["low"]:
-        recommendation = f"📉 ירידה לאזור קנייה - שקול לרכוש ב־${amount_to_buy:.0f}"
+        recommendation = f"🖍️ ירידה לאזור קנייה - שקול לרכוש ב־${amount_to_buy:.0f}"
         ALLOCATED[symbol] = ALLOCATED.get(symbol, 0) + amount_to_buy
 
     elif price >= stocks[symbol]["high"]:
@@ -69,6 +69,9 @@ def run_bot():
     global last_summary_time
     print("✅ הבוט פועל... בודק מניות")
 
+    # שליחת בדיקת חיבור בתחילת הריצה
+    send_telegram("🚀 הבוט התחיל לרוץ – מבצע בדיקת תקשורת")
+
     for symbol in stocks:
         already_reported[symbol] = None  # אתחול סטטוס קודם
 
@@ -84,7 +87,6 @@ def run_bot():
             stocks[symbol]["last"] = price
             stocks[symbol]["prices"].append(price)
 
-            # הגבלה של כמות נקודות המחיר
             if len(stocks[symbol]["prices"]) > MAX_PRICE_HISTORY:
                 stocks[symbol]["prices"] = stocks[symbol]["prices"][-MAX_PRICE_HISTORY:]
 
@@ -97,9 +99,8 @@ def run_bot():
                 f"{action}"
             )
 
-            if already_reported[symbol] != current_summary:
-                send_telegram(current_summary)
-                already_reported[symbol] = current_summary
+            send_telegram(current_summary)
+            already_reported[symbol] = current_summary
 
             create_graph(symbol, stocks[symbol]["prices"])
             time.sleep(10)

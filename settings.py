@@ -38,3 +38,4 @@ stocks = {
 USE_ANALYST_RATING = True
 USE_RSI = False
 USE_NEWS = False
+TEST_MODE = False
