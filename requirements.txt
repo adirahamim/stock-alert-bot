@@ -2,5 +2,3 @@ requests
 pytz
 matplotlib
 python-dotenv
-matplotlib
-
