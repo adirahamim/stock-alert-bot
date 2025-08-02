@@ -1,3 +1,6 @@
+import subprocess
+subprocess.Popen(["python", "listener.py"])  # הפעלת listener ברקע
+
 from core.fetcher import get_price, get_rating, get_rsi, get_macd, get_ema, get_volume_spike, get_news
 from core.strategy import decide_action
 from core.ai_scorer import score

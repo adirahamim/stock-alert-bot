@@ -8,7 +8,13 @@ from settings import TELEGRAM_TOKEN, OWNER_CHAT_ID, stocks
 from core.settings_updater import add_stock_to_settings
 
 SUGGESTIONS_PATH = "suggestions_log.json"
-logging.basicConfig(level=logging.INFO)
+from settings import SHOW_LISTENER_LOGS
+
+if SHOW_LISTENER_LOGS:
+    logging.basicConfig(level=logging.INFO)
+else:
+    logging.basicConfig(level=logging.CRITICAL)  # מצמצם הדפסות רק לשגיאות חמורות
+
 
 def load_suggestions():
     try:
