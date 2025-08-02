@@ -1,3 +1,4 @@
+
 import statistics
 
 def calculate_std(prices):
@@ -34,7 +35,7 @@ def score(stock_data, prices=[]):
 
     sentiment_boost = sentiment * 10
     trend_boost = trend_score * 5
-
     volatility = calculate_std(prices)
+
     final_score = base_score + sentiment_boost + trend_boost + min(volatility, 10)
     return round(final_score, 2)

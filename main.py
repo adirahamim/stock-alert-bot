@@ -1,6 +1,8 @@
 from core.fetcher import get_price, get_rating, get_rsi, get_macd, get_ema, get_volume_spike, get_news
 from core.strategy import decide_action
 from core.ai_scorer import score
+from core.sentiment import get_sentiment
+from core.trends import get_trend_score
 from core.notifier import notify
 from core.utils import get_active_market
 from runtime_manager import save_runtime_data, load_runtime_data
@@ -51,9 +53,9 @@ def main_loop():
                 "price": price,
                 "low": stocks[symbol]["low"],
                 "high": stocks[symbol]["high"],
-                "sentiment": 0,  # To be filled if sentiment analysis is integrated
-                "trend_score": 0  # To be filled if trends are integrated
-            })
+                "sentiment": get_sentiment(symbol, news),
+                "trend_score": get_trend_score(symbol)
+            }, prices=stocks[symbol].get("prices", []))
 
             print(f"{symbol} | Price: {price} | Action: {action} | Score: {score}")
             if action and (not FILTER_NO_SIGNAL or "no strong signal" not in action):
