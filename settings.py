@@ -68,4 +68,7 @@ TRADER_PROFILE = "aggressive"
 OWNER_CHAT_ID = 755385373 # מזהה הצ'אט של בעל הבוט
 FILTER_NO_SIGNAL = True  # שליטה אם לסנן הודעות "אין איתות"
 SHOW_LISTENER_LOGS = True  # שנה ל-True רק אם אתה רוצה לראות לוגים של listener
+# settings.py
+ENABLE_MARKET_HOURS_CHECK = True  # שנה ל-False אם אתה רוצה שהבוט ירוץ 24/7
+
 
