@@ -57,3 +57,34 @@ def send_alert(symbol, price, score, reason="איתות AI"):
     msg += f"⏰ {now}"
     send_telegram(msg)
     log_to_csv(symbol, price, reason)
+
+from settings import OWNER_CHAT_ID, TELEGRAM_TOKEN
+import requests
+
+def send_candidate_to_telegram(symbol, price, score):
+    message = (
+        f"📈 מועמדת חדשה: *{symbol}*\n"
+        f"מחיר נוכחי: ${price}\n"
+        f"ציון AI: *{score}*\n\n"
+        "תרצה להוסיף אותה לתיק שלך?"
+    )
+
+    url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
+    data = {
+        "chat_id": OWNER_CHAT_ID,
+        "text": message,
+        "parse_mode": "Markdown",
+        "reply_markup": {
+            "inline_keyboard": [[
+                {
+                    "text": "➕ הוסף לתיק",
+                    "callback_data": f"add:{symbol}"
+                }
+            ]]
+        }
+    }
+
+    try:
+        requests.post(url, json=data)
+    except Exception as e:
+        print(f"[ERROR] Failed to send candidate to Telegram: {e}")

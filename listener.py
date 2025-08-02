@@ -1,9 +1,11 @@
+
 import os
 import json
 import logging
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.ext import Application, CommandHandler, CallbackQueryHandler, ContextTypes
 from settings import TELEGRAM_TOKEN, OWNER_CHAT_ID, stocks
+from core.settings_updater import add_stock_to_settings
 
 SUGGESTIONS_PATH = "suggestions_log.json"
 logging.basicConfig(level=logging.INFO)
@@ -54,6 +56,14 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 del suggestions[symbol]
             save_suggestions(suggestions)
             await context.bot.send_message(chat_id=OWNER_CHAT_ID, text=f"🚫 נדחה: {field} של {symbol} לא עודכן")
+
+    elif data.startswith("add:"):
+        _, symbol = data.split(":")
+        success, msg = add_stock_to_settings(symbol)
+        if success:
+            await context.bot.send_message(chat_id=OWNER_CHAT_ID, text=f"✅ {symbol} נוספה לתיק.")
+        else:
+            await context.bot.send_message(chat_id=OWNER_CHAT_ID, text=f"❌ {symbol} לא נוספה: {msg}")
 
 def main():
     app = Application.builder().token(TELEGRAM_TOKEN).build()
