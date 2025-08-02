@@ -19,7 +19,7 @@ def score_signal(price, low, rsi, macd, rating, volume_spike):
         score += 20
     return min(score, 100)
 
-def score(stock_data):
+def score(stock_data, prices=[]):
     price = stock_data.get("price")
     low = stock_data.get("low")
     high = stock_data.get("high")
@@ -35,5 +35,6 @@ def score(stock_data):
     sentiment_boost = sentiment * 10
     trend_boost = trend_score * 5
 
-    final_score = base_score + sentiment_boost + trend_boost
+    volatility = calculate_std(prices)
+    final_score = base_score + sentiment_boost + trend_boost + min(volatility, 10)
     return round(final_score, 2)
