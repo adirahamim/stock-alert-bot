@@ -1,0 +1,7 @@
+requests
+pandas
+yfinance
+streamlit
+python-dotenv
+schedule
+python-telegram-bot
