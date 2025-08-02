@@ -1,11 +1,17 @@
 
+import sys
+import colorama
+from colorama import Fore, Style
 from core.ai_scorer import score
 from core.fetcher import get_price
+from settings import stocks
 from core.scanner import get_stock_candidates
 from core.notifier import send_candidate_to_telegram
-from settings import stocks
 
-print("🔍 Scanning market for hot stocks...")
+colorama.init()
+
+print(f"{'Symbol':<8} {'Price':<10} {'AI Score':<10}")
+print("-" * 30)
 
 symbols = get_stock_candidates()
 
@@ -15,22 +21,13 @@ for symbol in symbols:
         if not price:
             continue
 
-        # If stock doesn't exist in settings, create a temporary entry
-        if symbol not in stocks:
-            stocks[symbol] = {
-                "low": None,
-                "high": None,
-                "buy_price": None,
-                "last": None,
-                "prices": []
-            }
-
+        if "prices" not in stocks[symbol]:
+            stocks[symbol]["prices"] = []
         stocks[symbol]["prices"].append(price)
         if len(stocks[symbol]["prices"]) > 50:
             stocks[symbol]["prices"] = stocks[symbol]["prices"][-50:]
 
-        prices = stocks[symbol]["prices"]
-
+        prices = stocks[symbol].get("prices", [])
         score_val = score({
             "price": price,
             "low": stocks[symbol]["low"],
@@ -40,10 +37,16 @@ for symbol in symbols:
         }, prices=prices)
 
         if score_val >= 85:
-            print(f"{symbol} → ${price} | AI Score: {score_val} ✅")
-            send_candidate_to_telegram(symbol, price, score_val)
+            score_str = Fore.GREEN + str(score_val) + Style.RESET_ALL
+        elif score_val >= 50:
+            score_str = Fore.YELLOW + str(score_val) + Style.RESET_ALL
         else:
-            print(f"{symbol} → ${price} | AI Score: {score_val}")
+            score_str = Fore.RED + str(score_val) + Style.RESET_ALL
+
+        print(f"{symbol:<8} ${price:<9.2f} {score_str:<10}")
+
+        if score_val >= 85:
+            send_candidate_to_telegram(symbol, price, score_val)
 
     except Exception as e:
-        print(f"⚠️ שגיאה בסריקת {symbol}: {e}")
+        print(f"[ERROR] בשגיאת סריקה {symbol}: {e}")

@@ -67,5 +67,5 @@ TEST_MODE = False  # אם True – הבוט לא ישלח התראות, רק י�
 TRADER_PROFILE = "aggressive"
 OWNER_CHAT_ID = 755385373 # מזהה הצ'אט של בעל הבוט
 FILTER_NO_SIGNAL = True  # שליטה אם לסנן הודעות "אין איתות"
-SHOW_LISTENER_LOGS = False  # שנה ל-True רק אם אתה רוצה לראות לוגים של listener
+SHOW_LISTENER_LOGS = True  # שנה ל-True רק אם אתה רוצה לראות לוגים של listener
 
