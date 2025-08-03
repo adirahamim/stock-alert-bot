@@ -24,7 +24,8 @@ last_save_time = time.time()
 def main_loop():
     load_runtime_data(stocks)
     
-    from utils import should_run_now
+    from core.utils import should_run_now
+
 
     while True:
         if not should_run_now():
