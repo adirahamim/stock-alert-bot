@@ -1,0 +1,25 @@
+services:
+  - type: worker
+    name: stock-alert-bot
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python main.py
+    envVars:
+      - key: TELEGRAM_TOKEN
+        sync: false
+      - key: TELEGRAM_CHAT_IDS
+        sync: false
+      - key: OWNER_CHAT_ID
+        sync: false
+      - key: TWELVE_API
+        sync: false
+      - key: FINNHUB_API
+        sync: false
+      - key: ALPHA_VANTAGE_API_KEY
+        sync: false
+      - key: TAAPI_API_KEY
+        sync: false
+      - key: NEWS_API
+        sync: false
+      - key: TOTAL_BUDGET
+        sync: false
