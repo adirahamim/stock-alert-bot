@@ -63,6 +63,7 @@ USE_MACD = True
 USE_NEWS = True
 USE_VOLUME_SPIKE = True
 
+
 TEST_MODE = False  # אם True – הבוט לא ישלח התראות, רק ידפיס למסך
 TRADER_PROFILE = "aggressive"
 OWNER_CHAT_ID = 755385373 # מזהה הצ'אט של בעל הבוט
