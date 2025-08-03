@@ -1,4 +1,3 @@
-
 import sys
 import colorama
 from colorama import Fore, Style
@@ -17,12 +16,16 @@ symbols = get_stock_candidates()
 
 for symbol in symbols:
     try:
+        if symbol not in stocks:
+            continue  # דילוג על סימבול שלא מופיע ב־settings
+
         price = get_price(symbol)
         if not price:
             continue
 
         if "prices" not in stocks[symbol]:
             stocks[symbol]["prices"] = []
+
         stocks[symbol]["prices"].append(price)
         if len(stocks[symbol]["prices"]) > 50:
             stocks[symbol]["prices"] = stocks[symbol]["prices"][-50:]
@@ -49,4 +52,4 @@ for symbol in symbols:
             send_candidate_to_telegram(symbol, price, score_val)
 
     except Exception as e:
-        print(f"[ERROR] בשגיאת סריקה {symbol}: {e}")
+        print(f"[ERROR] Scan error for {symbol}: {e}")

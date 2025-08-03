@@ -10,6 +10,7 @@ from core.notifier import notify
 from core.utils import get_active_market
 from runtime_manager import save_runtime_data, load_runtime_data
 from settings import stocks, FILTER_NO_SIGNAL
+from core.utils import should_run_now
 
 import time
 from core.utils import calculate_buy_amount
@@ -22,12 +23,20 @@ last_save_time = time.time()
 
 def main_loop():
     load_runtime_data(stocks)
+    
+    from core.utils import should_run_now
+
+
     while True:
-        active_market = get_active_market()
-        if active_market == "CLOSED":
-            print("Markets closed – waiting...")
+        if not should_run_now():
+            print("⏳ שוק סגור – המתנה של דקה...")
             time.sleep(60)
             continue
+            active_market = get_active_market()
+            if active_market == "CLOSED":
+                print("Markets closed – waiting...")
+                time.sleep(60)
+                continue
 
         for symbol in stocks:
             if active_market == "IL" and not symbol.endswith(".TA"):

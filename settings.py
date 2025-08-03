@@ -63,6 +63,7 @@ USE_MACD = True
 USE_NEWS = True
 USE_VOLUME_SPIKE = True
 
+
 TEST_MODE = False  # אם True – הבוט לא ישלח התראות, רק ידפיס למסך
 TRADER_PROFILE = "aggressive"
 OWNER_CHAT_ID = 755385373 # מזהה הצ'אט של בעל הבוט
@@ -72,3 +73,12 @@ SHOW_LISTENER_LOGS = True  # שנה ל-True רק אם אתה רוצה לראות
 ENABLE_MARKET_HOURS_CHECK = True  # שנה ל-False אם אתה רוצה שהבוט ירוץ 24/7
 
 
+
+
+# שליטה בשעות מסחר
+ENABLE_MARKET_HOURS_CHECK = True  # שנה ל־False אם אתה רוצה שהבוט ירוץ 24/7
+MARKET_HOURS_US = {
+    "start": "16:00",
+    "end": "23:59",
+    "timezone": "Asia/Jerusalem"
+}

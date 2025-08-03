@@ -29,3 +29,21 @@ def calculate_buy_amount(price):
     allocation = 0.05  # 5% allocation per signal
     amount = TOTAL_BUDGET * allocation
     return round(amount, 2)
+
+
+# פונקציית בדיקה אם אנחנו בתוך שעות המסחר
+from datetime import datetime
+import pytz
+from settings import ENABLE_MARKET_HOURS_CHECK, MARKET_HOURS_US
+
+def should_run_now():
+    if not ENABLE_MARKET_HOURS_CHECK:
+        return True
+
+    tz = pytz.timezone(MARKET_HOURS_US["timezone"])
+    now = datetime.now(tz).time()
+    start_h, start_m = map(int, MARKET_HOURS_US["start"].split(":"))
+    end_h, end_m = map(int, MARKET_HOURS_US["end"].split(":"))
+    start = datetime.now(tz).replace(hour=start_h, minute=start_m, second=0, microsecond=0).time()
+    end = datetime.now(tz).replace(hour=end_h, minute=end_m, second=0, microsecond=0).time()
+    return start <= now <= end
